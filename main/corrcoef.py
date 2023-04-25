@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
+import sys
 
 # 连接 MySQL 数据库
 db = create_engine('mysql+pymysql://root:123456@localhost:3306/qxdatabase')
+
 
 def get_correlation_matrix(station, start_date, end_date, correlation):
     # 构造表名
@@ -25,10 +27,12 @@ def get_correlation_matrix(station, start_date, end_date, correlation):
     return corr_matrix.tolist()
 
 
-station = input('请输入气象站编号')
-start_date = input('请输入开始日期')
-end_date = input('请输入结束日期')
-correlation = [1,2,3]
+# 解析命令行参数
+station = sys.argv[1]
+start_date = sys.argv[2]
+end_date = sys.argv[3]
+correlation = list(map(int, sys.argv[4].split(",")))
+# 调用函数
 result = get_correlation_matrix(station, start_date, end_date, correlation)
-print("计算结果")
+# 输出结果
 print(result)
